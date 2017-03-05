@@ -1,0 +1,21 @@
+body {
+  background-color: darkgrey;
+}
+
+.thumbnail {
+    background-color: lightgrey;
+    border: 0.5px;
+    border-color: lightgrey;
+    border-style: solid;
+    border-radius: 25px;
+    position: relative;
+    padding: 0px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.thumbnail img {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    max-width: 50%;
+}
