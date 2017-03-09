@@ -12,10 +12,11 @@
                 <h1 class="text-center">BeerList</h1>
                 <div class="page-header">
                   <div ng-repeat="x in data" class="thumbnail">
+                    <button type="button" class="remButton pull-right" ng-click="removeBeer($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     <img ng-src="{{x.img}}">
-                    <p>{{x.name}} - {{x.style}} - {{x.abv}}</p>
+                    <h4>{{x.name}} — {{x.style}} — {{x.abv}}</h4>
                   </div>
-                <!-- render beers here -->
+
                 <div
                 <form>
                     <h3>Add a new beer</h3>
@@ -31,7 +32,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Image URL" ng-model="image"></input>
                     </div>
-                    <button type="button" class="btn btn-primary" ng-click="addBeer()">Add</button>
+                    <button type="button" class="btn btn-primary" ng-click="addBeer()">Cheers!</button>
                 </form>
             </div>
         </div>

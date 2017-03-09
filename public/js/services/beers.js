@@ -1,5 +1,3 @@
-//TODO:   app.service addBeer
-
 
 app.service('hardCodedBeers', function() {
     var data = [
@@ -9,18 +7,18 @@ app.service('hardCodedBeers', function() {
         abv: "10.2%",
         img: "http://jesterkingbrewery.com/images/384.png"
       },
-      {
-        name: "Funk Metal",
-        style: "Sour Barrel-Aged Stout",
-        abv: "9%",
-        img: "http://jesterkingbrewery.com/images/493.png"
-      },
-      {
-        name: "El Cedro",
-        style: "Hoppy Cedar-Aged Ale",
-        abv: "7.8%",
-        img: "http://jesterkingbrewery.com/images/533.png"
-      },
+      // {
+      //   name: "Funk Metal",
+      //   style: "Sour Barrel-Aged Stout",
+      //   abv: "9%",
+      //   img: "http://jesterkingbrewery.com/images/493.png"
+      // },
+      // {
+      //   name: "El Cedro",
+      //   style: "Hoppy Cedar-Aged Ale",
+      //   abv: "7.8%",
+      //   img: "http://jesterkingbrewery.com/images/533.png"
+      // },
       {
         name: "RU55",
         style: "Barrel-Aged Sour Red Ale",
@@ -29,7 +27,8 @@ app.service('hardCodedBeers', function() {
       }
     ];
 
-    this.getData= function () {
+    this.getData = function () {
         return data;
     }
+    debugger;
 });

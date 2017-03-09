@@ -19,3 +19,9 @@ body {
     margin-bottom: 5px;
     max-width: 50%;
 }
+
+.remButton {
+  margin-top: 10px;
+  margin-right: 10px;
+  color: grey;
+}
