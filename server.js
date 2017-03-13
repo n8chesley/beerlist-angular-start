@@ -16,7 +16,7 @@ var app = express();
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/beers');
-var Beer = require("./models/BeerModel");
+var Beer = require("./public/js/models/BeerModel");
 
 var bodyParser = require('body-parser')
 app.use(bodyParser.json());
