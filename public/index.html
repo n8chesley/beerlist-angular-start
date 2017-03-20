@@ -3,44 +3,46 @@
 <head>
     <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Engagement" rel="stylesheet">
 </head>
 
 <body ng-app="beerList" ng-controller="mainController">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <h1 class="text-center">BeerList</h1>
+                <h1 class="text-center beerListH1">BeerList</h1>
                 <div class="page-header">
-                  <div ng-repeat="x in data" class="thumbnail">
+                  <div ng-repeat="x in beers track by $index" class="thumbnail">
+                    <!-- {{x._id}} -->
                     <button type="button" class="remButton pull-right" ng-click="removeBeer($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <img ng-src="{{x.img}}">
-                    <h4>{{x.name}} — {{x.style}} — {{x.abv}}</h4>
+                    <img ng-src="{{x.image}}">
+                    <h4>{{x.name}} — {{x.style}} — {{x.abv}}% ABV</h4>
                   </div>
 
                 <div
                 <form>
                     <h3>Add a new beer</h3>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Beer Name" ng-model="name"></input>
+                        <input type="text" class="form-control" placeholder="Beer Name" ng-model="beer.name"></input>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Style" ng-model="style"></input>
+                        <input type="text" class="form-control" placeholder="Style" ng-model="beer.style"></input>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="ABV" ng-model="abv"></input>
+                        <input type="text" class="form-control" placeholder="ABV" ng-model="beer.abv"></input>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Image URL" ng-model="image"></input>
+                        <input type="text" class="form-control" placeholder="Image URL" ng-model="beer.image"></input>
                     </div>
-                    <button type="button" class="btn btn-primary" ng-click="addBeer()">Cheers!</button>
+                    <button type="button" class="btn btn-primary" ng-click="addBeer(beer)">Cheers!</button>
                 </form>
             </div>
         </div>
     </div>
     <script src="angular/angular.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/services/beers.js"></script>
-    <script src="js/controllers/mainController.js"></script>
+    <script src="js/services/appfactory.js"></script>
+    <script src="js/controllers/appcontroller.js"></script>
 </body>
 
 </html>

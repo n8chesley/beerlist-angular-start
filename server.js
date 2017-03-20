@@ -1,14 +1,13 @@
 var express = require('express');
-var app = express();
-
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/beers');
-var Beer = require("./public/js/models/BeerModel");
+var bodyParser = require('body-parser');
+var Beer = require("./models/BeerModel");
 
-var bodyParser = require('body-parser')
+var app = express();
+mongoose.connect('mongodb://localhost/beers');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
@@ -24,9 +23,8 @@ app.get('/beers', function (req, res, next) {
 });
 
 app.post('/beers', function(req, res, next) {
-  var beer = new Beer(req.body);
-
-  beer.save(function(err, beer) {
+  console.log(req.body);
+  Beer.create(req.body, function(err,beer) {
     if (err) {
       console.error(err)
       return next(err);
@@ -47,14 +45,31 @@ app.delete('/beers/:id', function(req, res, next) {
   });
 });
 
-app.put('/beers/:id', function(req, res, next) {
-  Beer.findOneAndUpdate({ _id: req.param.id }, req.body, function(err, beer) {
-    if (err) {
-      console.error(err)
-      return next(err);
-    } else {
-      res.send(beer);
-    }
+// app.put('/beers/:id', function(req, res, next) {
+//   Beer.findOneAndUpdate({ _id: req.param.id }, req.body, { new: true }, function(err, beer) {
+//     if (err) {
+//       console.error(err)
+//       return next(err);
+//     } else {
+//       res.send(beer);
+//     }
+//   });
+// });
+
+// error handler to catch 404 and forward to main error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// main error handler
+// warning - not for use in production code!
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: err
   });
 });
 
