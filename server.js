@@ -11,9 +11,50 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-//  post reviews >
+/////  post reviews >
 app.post('/beers/:id/reviews', function(req, res, next) {
+  Beer.findById(req.params.id, function(err, foundBeer) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!foundBeer) {
+      return res.send("Error! No beer found with that ID");
+    } else {
+      foundBeer.reviews.push(req.body)
+      foundBeer.save(function(err, updatedBeer) {
+        if (err) {
+          return next(err);
+        } else {
+          res.send(updatedBeer);
+        }
+      });
+    }
+  });
+});
 
+//////  delete reviews >
+app.delete('/beers/:beerid/reviews/:reviewid', function(req, res, next) {
+  Beer.findById(req.params.beerid, function(err, foundBeer) {
+    if (err) {
+      return next(err);
+    } else if (!foundBeer) {
+      return res.send("Error! No beer found with that ID");
+    } else {
+      var reviewToDelete = foundBeer.reviews.id(req.params.reviewid)
+      if (reviewToDelete) {
+        reviewToDelete.remove()
+        foundBeer.save(function(err, updatedBeer) {
+          if (err) {
+            return next(err);
+          } else {
+            res.send(updatedBeer);
+          }
+        });
+      } else {
+        return res.send("Error! No review found with that ID");
+      }
+    }
+  });
 });
 
 app.get('/beers', function (req, res, next) {
