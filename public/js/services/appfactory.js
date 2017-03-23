@@ -12,7 +12,7 @@ app.factory('beerFactory', function($http) {
   };
 
   beerFactory.addBeer = function(newBeer) {
-    return $http.post('/beers', newBeer)  // "newBeer" is what's sent
+    return $http.post('/beers', newBeer) 
       .then(function(response) {
         return response.data
       }, function(err) {
@@ -28,6 +28,13 @@ app.factory('beerFactory', function($http) {
         console.error(err)
       });
   };
+
+  beerFactory.updateBeer = function(beerToUpdate) {
+  return $http.put('/beers/' + beerToUpdate._id, beerToUpdate)
+    .then(function(response) {
+      return response.data
+    });
+};
 
   return beerFactory;
 });

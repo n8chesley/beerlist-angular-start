@@ -14,12 +14,23 @@
                 <div class="page-header">
                   <div ng-repeat="x in beers track by $index" class="thumbnail">
                     <!-- {{x._id}} -->
-                    <button type="button" class="remButton pull-right" ng-click="removeBeer($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <img ng-src="{{x.image}}">
-                    <h4>{{x.name}} — {{x.style}} — {{x.abv}}% ABV</h4>
+                    <div ng-hide="tempBeer">
+                        <img ng-src={{x.image}}/>
+                        <h4>{{x.name}} — {{x.style}} — {{x.abv}}% ABV</h4>
+                        <button type="button" ng-click="editBeer($index)">Edit Beer</button><button type="button" ng-click="removeBeer($index)">Remove Beer</button>
+                        <br><br>
+                    </div>
+                    <form ng-show="tempBeer">
+                        <!-- all inputs are bound to the temporary beer -->
+                        <input type="text" ng-model="tempBeer.name">
+                        <input type="text" ng-model="tempBeer.style">
+                        <input type="text" ng-model="tempBeer.abv">
+                        <!-- if cancel is pressed, all we need to do is remove the tempBeer -->
+                        <button type="button" ng-click="tempBeer = null">Cancel</button>
+                        <button type="button" ng-click="updateBeer(tempBeer, $index)">Submit</button>
+                    </form>
                   </div>
-
-                <div
+                <div>
                 <form>
                     <h3>Add a new beer</h3>
                     <div class="form-group">

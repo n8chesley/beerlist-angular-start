@@ -11,6 +11,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
+//  post reviews >
+app.post('/beers/:id/reviews', function(req, res, next) {
+
+});
+
 app.get('/beers', function (req, res, next) {
   Beer.find(function (error, beers) {
     if (error) {
@@ -45,16 +50,17 @@ app.delete('/beers/:id', function(req, res, next) {
   });
 });
 
-// app.put('/beers/:id', function(req, res, next) {
-//   Beer.findOneAndUpdate({ _id: req.param.id }, req.body, { new: true }, function(err, beer) {
-//     if (err) {
-//       console.error(err)
-//       return next(err);
-//     } else {
-//       res.send(beer);
-//     }
-//   });
-// });
+app.put('/beers/:id', function(req, res, next) {
+  Beer.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function(err, beer) {
+    if (err) {
+      console.error(err)
+      return next(err);
+    } else {
+      console.log(beer);
+      res.json(beer);
+    }
+  });
+});
 
 // error handler to catch 404 and forward to main error handler
 app.use(function(req, res, next) {

@@ -8,6 +8,11 @@ var beerSchema = new Schema({
   abv: { type: Number }
 });
 
+var reviewSchema = new Schema({
+  name: String,
+  text: String
+});
+
 var Beer = mongoose.model("Beer", beerSchema);
 
 module.exports = Beer;

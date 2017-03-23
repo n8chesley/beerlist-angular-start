@@ -18,7 +18,27 @@ app.controller('mainController', function($scope, beerFactory) {
       }
     });
   }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  $scope.editBeer = function(index) {
+    // notice that *this* refers to the element's scope - in this case a beer.
+    // so by using it below we're adding 'tempBeer' to the beer's scope.
+    this.tempBeer = angular.copy($scope.beers[index]);
+    // debugger;
+  };
 
+  $scope.updateBeer = function(beerCopy, index) {
+    var self = this;
+    // debugger;
+    //calling the update beer on the service to send the new info to the server
+    beerFactory.updateBeer(beerCopy).then(function(modifiedBeer) {
+      //when the server finished updating successfully, replace the original beer with the modified version
+      $scope.beers[index] = modifiedBeer;
+      // debugger;
+      // 'self' refers to the beer scope (we assigned it earlier because in here 'this' is something else)
+      self.tempBeer = null;
+    });
+  }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   beerFactory.getBeers().then(function(beers) {  //controller calls the factory
     $scope.beers = beers;
   });
