@@ -11,8 +11,17 @@ app.factory('beerFactory', function($http) {
       });
   };
 
+  beerFactory.getBeer = function(id) {
+  return $http.get('/beers/' + id)  // get just one beer
+    .then(function(response) {
+      return response.data
+    }, function(err) {
+      console.error(err)
+    });
+};
+
   beerFactory.addBeer = function(newBeer) {
-    return $http.post('/beers', newBeer) 
+    return $http.post('/beers', newBeer)
       .then(function(response) {
         return response.data
       }, function(err) {

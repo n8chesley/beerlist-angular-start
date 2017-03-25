@@ -68,8 +68,19 @@ app.get('/beers', function (req, res, next) {
   });
 });
 
+app.get('/beers/:id', function(req, res, next) {
+  Beer.findById(req.params.id, function(error, beer) {
+    if (error) {
+      console.error(error)
+      return next(error);
+    } else {
+      res.send(beer);
+    }
+  });
+});
+
 app.post('/beers', function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   Beer.create(req.body, function(err,beer) {
     if (err) {
       console.error(err)
