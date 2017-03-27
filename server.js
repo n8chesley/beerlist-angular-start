@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 // var Beer = require("./models/BeerModel"); // obsolete - see routes/beerRoutes.js
 var beerRoutes = require('./routes/beerRoutes');
-var User = require("./models/UserModel");
+var userRoutes = require('./routes/userRoutes');
+// var User = require("./models/UserModel"); // obsolete - see routes/userRoutes.js
 
 mongoose.connect('mongodb://localhost/beers');
 
@@ -36,6 +37,7 @@ passport.deserializeUser(User.deserializeUser()); //and here
 //that it should use the routes in 'beerRoutes'
 //and those are in our new beerRoutes.js file
 app.use('/beers', beerRoutes);
+app.use('/users', userRoutes);
 
 // error handler to catch 404 and forward to main error handler
 app.use(function(req, res, next) {
