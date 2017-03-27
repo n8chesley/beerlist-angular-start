@@ -1,118 +1,41 @@
 var express = require('express');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var expressSession = require('express-session');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var Beer = require("./models/BeerModel");
+// var Beer = require("./models/BeerModel"); // obsolete - see routes/beerRoutes.js
+var beerRoutes = require('./routes/beerRoutes');
+var User = require("./models/UserModel");
+
+mongoose.connect('mongodb://localhost/beers');
 
 var app = express();
-mongoose.connect('mongodb://localhost/beers');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-/////  post reviews >
-app.post('/beers/:id/reviews', function(req, res, next) {
-  Beer.findById(req.params.id, function(err, foundBeer) {
-    if (err) {
-      console.error(err);
-      return next(err);
-    } else if (!foundBeer) {
-      return res.send("Error! No beer found with that ID");
-    } else {
-      foundBeer.reviews.push(req.body)
-      foundBeer.save(function(err, updatedBeer) {
-        if (err) {
-          return next(err);
-        } else {
-          res.send(updatedBeer);
-        }
-      });
-    }
-  });
-});
+// configure passport and session middleware
+app.use(expressSession({
+    secret: 'yourSecretHere',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-//////  delete reviews >
-app.delete('/beers/:beerid/reviews/:reviewid', function(req, res, next) {
-  Beer.findById(req.params.beerid, function(err, foundBeer) {
-    if (err) {
-      return next(err);
-    } else if (!foundBeer) {
-      return res.send("Error! No beer found with that ID");
-    } else {
-      var reviewToDelete = foundBeer.reviews.id(req.params.reviewid)
-      if (reviewToDelete) {
-        reviewToDelete.remove()
-        foundBeer.save(function(err, updatedBeer) {
-          if (err) {
-            return next(err);
-          } else {
-            res.send(updatedBeer);
-          }
-        });
-      } else {
-        return res.send("Error! No review found with that ID");
-      }
-    }
-  });
-});
+// configure passport-local to use User model for auth
+passport.use(User.createStrategy()); //Thanks to m-l-p there is no need to create a local strategy
+passport.serializeUser(User.serializeUser()); //also it helps here
+passport.deserializeUser(User.deserializeUser()); //and here
 
-app.get('/beers', function (req, res, next) {
-  Beer.find(function (error, beers) {
-    if (error) {
-      console.error(error)
-      return next(error);
-    } else {
-      res.send(beers);
-    }
-  });
-});
-
-app.get('/beers/:id', function(req, res, next) {
-  Beer.findById(req.params.id, function(error, beer) {
-    if (error) {
-      console.error(error)
-      return next(error);
-    } else {
-      res.send(beer);
-    }
-  });
-});
-
-app.post('/beers', function(req, res, next) {
-  // console.log(req.body);
-  Beer.create(req.body, function(err,beer) {
-    if (err) {
-      console.error(err)
-      return next(err);
-    } else {
-      res.json(beer);
-    }
-  });
-});
-
-app.delete('/beers/:id', function(req, res, next) {
-  Beer.remove({ _id: req.params.id }, function(err) {
-    if (err) {
-      console.error(err)
-      return next(err);
-    } else {
-      res.send("Beer Deleted");
-    }
-  });
-});
-
-app.put('/beers/:id', function(req, res, next) {
-  Beer.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function(err, beer) {
-    if (err) {
-      console.error(err)
-      return next(err);
-    } else {
-      console.log(beer);
-      res.json(beer);
-    }
-  });
-});
+//This tells the server that when a request comes into '/beers'
+//that it should use the routes in 'beerRoutes'
+//and those are in our new beerRoutes.js file
+app.use('/beers', beerRoutes);
 
 // error handler to catch 404 and forward to main error handler
 app.use(function(req, res, next) {
